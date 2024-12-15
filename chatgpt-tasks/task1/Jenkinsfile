@@ -1,0 +1,48 @@
+/*
+ * Task: Create a Jenkins Pipeline with the following steps:
+ * 1. Add a parameter to the pipeline:
+ *    - Parameter name: USERNAME
+ *    - Type: String
+ *    - Description: Accepts a username to personalize the pipeline.
+ * 2. Create a "Build" stage:
+ *    - Print the message: "Building the project...".
+ * 3. Create a "Test" stage:
+ *    - Print all numbers from 1 to 10.
+ * 4. Create a "Deploy" stage:
+ *    - Print the message: "Deployment successful!".
+ * 5. After the pipeline completes, print a personalized message:
+ *    - "Hello, <USERNAME>!" where <USERNAME> is the parameter value.
+ */
+
+pipeline {
+    agent any
+    parameters {
+        string(name: 'USERNAME', defaultValue: 'User', description: 'Accepts a username to personalize the pipeline.')
+    }
+    stages {
+        stage("Build") {
+            steps {
+                echo "Building the project..."
+            }
+        }
+        stage("Test") {
+            steps {
+                script {
+                    (1..10).each { number ->
+                        println "${number}"
+                    }
+                }
+            }
+        }
+        stage("Deploy") {
+            steps {
+                echo "Deployment successful!"
+            }
+        }
+    }
+    post {
+        always {
+            echo "Hello, ${params.USERNAME}!"
+        }
+    }
+}
